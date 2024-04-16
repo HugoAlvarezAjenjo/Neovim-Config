@@ -9,7 +9,11 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "jdtls" },
+				ensure_installed = {
+					"lua_ls",
+					"jdtls",
+					"lemminx",
+				},
 			})
 		end,
 	},
@@ -17,8 +21,9 @@ return {
 		"neovim/nvim-lspconfig",
 		config = function()
 			local lspconfig = require("lspconfig")
-			lspconfig.lua_ls.setup({})
-			lspconfig.jdtls.setup({})
+			lspconfig.lua_ls.setup({}) -- Lua LSP
+			lspconfig.jdtls.setup({}) -- Java LSP
+			lspconfig.lemminx.setup({}) -- XML LSP
 
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
