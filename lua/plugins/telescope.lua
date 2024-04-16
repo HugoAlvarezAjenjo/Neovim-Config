@@ -13,6 +13,12 @@ return {
 						require("telescope.themes").get_dropdown({}),
 					},
 				},
+				defaults = {
+					file_ignore_patterns = {
+						".git/*",
+						"target/*",
+					},
+				},
 			})
 			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<C-o>", builtin.find_files, {})
