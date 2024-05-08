@@ -8,7 +8,7 @@ return {
 					"javac $fileName &&",
 					"java $fileNameWithoutExt",
 				},
-				python = "python3 -u",
+				python = "python",
 				c = function(...)
 					c_base = {
 						"cd $dir &&",
