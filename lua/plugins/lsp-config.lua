@@ -24,6 +24,7 @@ return {
 			lspconfig.lua_ls.setup({}) -- Lua LSP
 			lspconfig.jdtls.setup({}) -- Java LSP
 			lspconfig.lemminx.setup({}) -- XML LSP
+			lspconfig.clangd.setup({}) -- C/C++ LSP
 		end,
 	},
 }
