@@ -25,6 +25,7 @@ return {
 			lspconfig.jdtls.setup({}) -- Java LSP
 			lspconfig.lemminx.setup({}) -- XML LSP
 			lspconfig.clangd.setup({}) -- C/C++ LSP
+			lspconfig.texlab.setup({}) -- TexLab LSP
 		end,
 	},
 }
