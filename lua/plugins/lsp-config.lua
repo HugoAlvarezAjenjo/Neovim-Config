@@ -13,6 +13,8 @@ return {
 					"lua_ls",
 					"jdtls",
 					"lemminx",
+                    "clangd",
+                    "texlab",
 				},
 			})
 		end,
