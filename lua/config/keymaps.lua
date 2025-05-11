@@ -23,9 +23,12 @@ vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<CR>", {desc = "Open LazyGit menu
 vim.keymap.set("n", "K", vim.lsp.buf.hover, {desc = "Show documentation"})
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {desc = "Code Actions"})
 vim.keymap.set("n", "<leader>cx", vim.lsp.buf.format, {desc = "Format code"})
+
 vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {desc = "Rename variable"})
+
 vim.keymap.set("n", "<leader>fd", vim.lsp.buf.definition, {desc = "Go to definition"})
 vim.keymap.set("n", "<leader>fr", vim.lsp.buf.references, {desc = "Go to references"})
+vim.keymap.set("n", "<leader>fi", vim.lsp.buf.references, {desc = "Go to implemenations"})
 
 -- --- Neotree ---
 vim.keymap.set("n", "<C-n>", "<cmd>Neotree toggle=true<CR>", {desc = "Toggle Neotree"})

@@ -30,4 +30,10 @@ return {
 			lspconfig.texlab.setup({}) -- TexLab LSP
 		end,
 	},
+    { -- Utility for Configuring Java Language Server
+        "mfussenegger/nvim-jdtls",
+        dependencies = {
+            "mfussenegger/nvim-dap",
+        }
+    },
 }
