@@ -1,3 +1,4 @@
+-- Setup lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
@@ -10,6 +11,9 @@ if not vim.loop.fs_stat(lazypath) then
 	})
 end
 
+vim.opt.rtp:prepend(lazypath)
+
+-- Set powershell options
 local powershell_options = {
 	shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell",
 	shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
@@ -23,8 +27,8 @@ for option, value in pairs(powershell_options) do
 	vim.opt[option] = value
 end
 
-vim.opt.rtp:prepend(lazypath)
-
-require("vim-options")
+-- Import config
+require("config.options")
+require("config.keymaps")
 require("lazy").setup("plugins")
-require("mappings")
+
