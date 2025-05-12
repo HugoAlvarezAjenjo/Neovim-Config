@@ -30,5 +30,6 @@ end
 -- Import config
 require("config.options")
 require("config.keymaps")
+require("config.autocmd")
 require("lazy").setup("plugins")
 
