@@ -9,30 +9,36 @@ local function get_os()
     end
 end
 
+local function normalize(path)
+  return path and path:gsub("\\", "/")
+end
+
+
 local function get_jdtls()
     local mason_registy = require("mason-registry") -- Mason Registry
     local jdtls = mason_registy.get_package("jdtls") -- JDTLS
-    local jdtls_path = jdtls:get_install_path() -- JDTLS Path
-    local launcher = vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar") -- JDTLS Launcher
+    local jdtls_path = normalize(jdtls:get_install_path()) -- JDTLS Path (normalizado)
+    local launcher = normalize(vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar")) -- JDTLS Launcher
+    print("Launcher: ", launcher)
     local SYSTEM = get_os()
-    local config = jdtls_path .. "/config_" .. SYSTEM -- JDTLS Config
-    local lombok = jdtls_path .. "/lombok.jar" -- Lombok path
+    local config = normalize(jdtls_path .. "/config_" .. SYSTEM) -- JDTLS Config
+    local lombok = normalize(jdtls_path .. "/lombok.jar") -- Lombok path
     return launcher, config, lombok
 end
 
 local function get_bundles()
     local mason_registy = require("mason-registry") -- Mason Registry
     local java_debug = mason_registy.get_package("java-debug-adapter") -- Java Debug
-    local java_debug_path = java_debug:get_install_path() -- Java Debug Path
+    local java_debug_path = normalize(java_debug:get_install_path()) -- Java Debug Path (normalizado)
 
     local bundles = {
         vim.fn.glob(java_debug_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar",1),
     }
 
     local java_test = mason_registy.get_package("java-test") -- Java Test
-    local java_test_path = java_test:get_install_path() -- Java Test Path
+    local java_test_path = normalize(java_test:get_install_path()) -- Java Test Path (normalizado)
 
-    -- Add all JAR files for running tests in debug mode to de bundle list
+    -- Add all JAR files for running tests in debug mode to the bundle list
     -- I'm not knowing what I'm doing here ¯\_(ツ)_/¯
     vim.list_extend(bundles, vim.split(vim.fn.glob(java_test_path .. "/extension/server/*.jar", 1), "\n"))
 
@@ -43,7 +49,7 @@ local function get_workspace()
     local home = os.getenv("HOME") or os.getenv("USERPROFILE")
     local workspace = home .. "/workbench/" -- My Workspace
     local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t") -- More dark magic (¬_¬)
-    local workspace_path = workspace .. project_name
+    local workspace_path = normalize(workspace .. project_name) -- Workspace Path (normalizado)
     return workspace_path
 end
 
@@ -83,8 +89,7 @@ local function setup_jdtls()
     local workspace_path = get_workspace()
     local bundles = get_bundles()
     -- Usa siempre '/' como separador (Neovim maneja bien eso)
-    local google_style_url = "file://" .. vim.fn.stdpath("config"):gsub("\\", "/") .. "/lang_servers/intellij-java-google-style.xml"
-
+    local google_style_url = "file://" .. normalize(vim.fn.stdpath("config")) .. "/lang_servers/intellij-java-google-style.xml" -- Google Style URL normalizado
 
     local root_dir = jdtls.setup.find_root({'.git', 'pom.xml', 'build.gradle', 'mvnw', 'gradlew'})
 
@@ -122,7 +127,7 @@ local function setup_jdtls()
             -- Enable code formatting
             format = {
                 enabled = true,
-                -- Use the Google Style guide for code formattingh
+                -- Use the Google Style guide for code formatting
                 settings = {
                     url = google_style_url
                     -- profile = "GoogleStyle"
@@ -144,7 +149,7 @@ local function setup_jdtls()
             contentProvider = {
                 preferred = "fernflower"
             },
-            -- Setup automatical package import oranization on file save
+            -- Setup automatic package import organization on file save
             saveActions = {
                 organizeImports = true
             },
@@ -228,14 +233,14 @@ local function setup_jdtls()
         require('jdtls.dap').setup_dap()
 
         -- Find the main method(s) of the application so the debug adapter can successfully start up the application
-        -- Sometimes this will randomly fail if language server takes to long to startup for the project, if a ClassDefNotFoundException occurs when running
+        -- Sometimes this will randomly fail if language server takes too long to startup for the project, if a ClassDefNotFoundException occurs when running
         -- the debug tool, attempt to run the debug tool while in the main class of the application, or restart the neovim instance
         -- Unfortunately I have not found an elegant way to ensure this works 100%
         require('jdtls.dap').setup_dap_main_class_configs()
         -- Enable jdtls commands to be used in Neovim
         require 'jdtls.setup'.add_commands()
         -- Refresh the codelens
-        -- Code lens enables features such as code reference counts, implemenation counts, and more.
+        -- Code lens enables features such as code reference counts, implementation counts, and more.
         vim.lsp.codelens.refresh()
 
         -- Setup a function that automatically runs every time a java file is saved to refresh the code lens
