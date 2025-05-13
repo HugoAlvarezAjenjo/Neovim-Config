@@ -19,8 +19,7 @@ local function get_jdtls()
     local jdtls = mason_registy.get_package("jdtls") -- JDTLS
     local jdtls_path = normalize(jdtls:get_install_path()) -- JDTLS Path (normalizado)
     local launcher = normalize(vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar")) -- JDTLS Launcher
-    print("Launcher: ", launcher)
-    local SYSTEM = get_os()
+    local SYSTEM = get_os() -- Devuelve win
     local config = normalize(jdtls_path .. "/config_" .. SYSTEM) -- JDTLS Config
     local lombok = normalize(jdtls_path .. "/lombok.jar") -- Lombok path
     return launcher, config, lombok
@@ -47,7 +46,7 @@ end
 
 local function get_workspace()
     local home = os.getenv("HOME") or os.getenv("USERPROFILE")
-    local workspace = home .. "/workbench/" -- My Workspace
+    local workspace = home .. "/.jdtls/" -- My Workspace
     local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t") -- More dark magic (¬_¬)
     local workspace_path = normalize(workspace .. project_name) -- Workspace Path (normalizado)
     return workspace_path
@@ -263,6 +262,7 @@ local function setup_jdtls()
     }
 
     -- Start the JDTLS server
+    -- print("JDTLS CMD: " .. table.concat(cmd, " "))
     require('jdtls').start_or_attach(config)
 end
 
