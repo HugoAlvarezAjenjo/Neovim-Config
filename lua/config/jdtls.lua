@@ -1,9 +1,20 @@
+local function get_os()
+    local sysname = vim.loop.os_uname().sysname
+    if sysname == "Windows_NT" then
+        return "win"
+    elseif sysname == "Darwin" then
+        return "mac"
+    else
+        return "linux"
+    end
+end
+
 local function get_jdtls()
     local mason_registy = require("mason-registry") -- Mason Registry
     local jdtls = mason_registy.get_package("jdtls") -- JDTLS
     local jdtls_path = jdtls:get_install_path() -- JDTLS Path
     local launcher = vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar") -- JDTLS Launcher
-    local SYSTEM = "win" -- JDTLS System
+    local SYSTEM = get_os()
     local config = jdtls_path .. "/config_" .. SYSTEM -- JDTLS Config
     local lombok = jdtls_path .. "/lombok.jar" -- Lombok path
     return launcher, config, lombok
@@ -71,6 +82,9 @@ local function setup_jdtls()
     local launcher, config_os, lombok = get_jdtls()
     local workspace_path = get_workspace()
     local bundles = get_bundles()
+    -- Usa siempre '/' como separador (Neovim maneja bien eso)
+    local google_style_url = "file://" .. vim.fn.stdpath("config"):gsub("\\", "/") .. "/lang_servers/intellij-java-google-style.xml"
+
 
     local root_dir = jdtls.setup.find_root({'.git', 'pom.xml', 'build.gradle', 'mvnw', 'gradlew'})
 
@@ -110,7 +124,7 @@ local function setup_jdtls()
                 enabled = true,
                 -- Use the Google Style guide for code formattingh
                 settings = {
-                    url = "file:///" .. vim.fn.stdpath("config"):gsub("\\", "/") .. "/lang_servers/intellij-java-google-style.xml",
+                    url = google_style_url
                     -- profile = "GoogleStyle"
                 }
             },
