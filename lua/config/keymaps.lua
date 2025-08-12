@@ -2,6 +2,10 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Jump back to previous cursor position
+vim.keymap.set("n", "<leader>o", "<C-o>", { desc = "Go back to previous location" })
+vim.keymap.set("n", "<leader>i", "<C-i>", { desc = "Go forward to next location" })
+
 -- Remove search highlights
 vim.keymap.set("n", "<esc>", "<cmd>nohlsearch<cr>", { desc = "Remove search highlights", silent = true })
 
@@ -28,7 +32,7 @@ vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {desc = "Rename variable"})
 
 vim.keymap.set("n", "<leader>fd", vim.lsp.buf.definition, {desc = "Go to definition"})
 vim.keymap.set("n", "<leader>fr", vim.lsp.buf.references, {desc = "Go to references"})
-vim.keymap.set("n", "<leader>fi", vim.lsp.buf.references, {desc = "Go to implemenations"})
+vim.keymap.set("n", "<leader>fi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 
 -- --- Neotree ---
 vim.keymap.set("n", "<C-n>", "<cmd>Neotree toggle=true<CR>", {desc = "Toggle Neotree"})
