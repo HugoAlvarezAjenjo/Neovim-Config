@@ -1,22 +1,43 @@
--- Left Column
-vim.opt.number = true              -- Display line numbers
--- vim.opt.relativenumber = true      -- Display relative line numbers
-vim.opt.numberwidth = 4            -- Line number width
-vim.opt.signcolumn = "yes"         -- Always display sign column
-vim.opt.wrap = true                -- Line wrapping
-vim.opt.linebreak = true           -- Wrap at word boundaries
-vim.opt.scrolloff = 5              -- Lines of context
+-- UI
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.numberwidth = 4
+vim.opt.signcolumn = "yes"
+vim.opt.wrap = true
+vim.opt.linebreak = true
+vim.opt.scrolloff = 5
+vim.opt.sidescrolloff = 8
 
--- Tabs & Spacing
-vim.opt.shiftwidth = 4             -- Indentation width
-vim.opt.tabstop = 4                 -- Number of spaces for a tab character
-vim.opt.softtabstop = 4             -- Spaces per Tab key press
-vim.opt.expandtab = true            -- Use spaces instead of tabs
-vim.opt.smartindent = true          -- Smart indentation
-vim.opt.breakindent = true          -- Preserve indent on wrapped lines
+-- Indentation
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.expandtab = true
+vim.opt.smartindent = true
+vim.opt.breakindent = true
 
--- General
-vim.opt.fileencoding = "utf-8"      -- File encoding
-vim.opt.mouse = "a"                 -- Enable mouse support
-vim.opt.showmode = false            -- Hide mode (statusline will show it)
+-- Behavior
+vim.opt.mouse = "a"
+vim.opt.showmode = false
+vim.opt.fileencoding = "utf-8"
+vim.opt.undofile = true
+vim.opt.updatetime = 250
 
+-- Filetype overrides
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "yaml", "lua" },
+  callback = function()
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.tabstop = 2
+  end,
+})
+
+-- Toggle relativenumber dynamically
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained" }, {
+  pattern = "*",
+  callback = function() vim.opt.relativenumber = true end,
+})
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
+  pattern = "*",
+  callback = function() vim.opt.relativenumber = false end,
+})
