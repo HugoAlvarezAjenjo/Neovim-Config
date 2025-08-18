@@ -3,23 +3,17 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects", -- Additional text objects
-      "windwp/nvim-ts-autotag", -- Auto-close HTML tags
+      "windwp/nvim-ts-autotag", -- Auto-close tags
+      "nvim-treesitter/nvim-treesitter-textobjects", -- Advanced text objects
     },
-    cmd = { "TSUpdate", "TSInstall", "TSEnable" },
+    cmd = { "TSUpdate", "TSInstall" },
     event = { "BufReadPost", "BufNewFile" },
     config = function()
       require("nvim-treesitter.configs").setup({
-        -- Essential
+        -- Essential features
         auto_install = true,
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false, -- Faster parsing
-        },
-        indent = {
-          enable = true,
-          disable = { "python", "yaml" }, -- Languages where indentation is problematic
-        },
+        highlight = { enable = true },
+        indent = { enable = true },
 
         -- Extended features
         incremental_selection = {
@@ -43,30 +37,12 @@ return {
             },
           },
         },
-        autotag = {
-          enable = true,
-          filetypes = { "html", "javascript", "typescript", "jsx", "tsx", "markdown" },
-        },
-        ensure_installed = { -- Recommended core languages
-          "lua",
-          "vim",
-          "vimdoc",
-          "query",
-          "bash",
-          "markdown",
-          "markdown_inline",
-          "python",
-          "javascript",
-          "typescript",
-          "html",
-          "css",
-        },
       })
     end,
   },
   {
     "windwp/nvim-ts-autotag",
-    config = true, -- Simple setup
-    ft = { "html", "jsx", "tsx", "markdown" }, -- Only load for relevant files
+    config = true, -- New recommended setup method
+    ft = { "html", "javascript", "typescript", "jsx", "tsx", "markdown" },
   },
 }
